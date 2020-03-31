@@ -158,7 +158,7 @@ public abstract class TestBase {
 
     @BeforeEach
     public void beforeTest(TestInfo testInfo) throws IOException {
-        if (isPlaybackMode() && System.getProperty("skipOutput").equalsIgnoreCase("true")) {
+        if (isPlaybackMode()) {
             System.setOut(new PrintStream(new OutputStream() {
                 @Override
                 public void write(int b) throws IOException {
@@ -166,6 +166,8 @@ public abstract class TestBase {
                 }
             }));
 
+            String skipError = System.getProperty("skipError");
+            if (skipError != null && skipError.equalsIgnoreCase("true"))
             System.setErr(new PrintStream(new OutputStream() {
                 @Override
                 public void write(int b) throws IOException {
@@ -191,7 +193,7 @@ public abstract class TestBase {
             restClient = buildRestClient(new RestClientBuilder()
                     .withBaseUrl(playbackUri + "/")
                     .withSerializerAdapter(new AzureJacksonAdapter())
-                    .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE))
+                    .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                     .withPolicy(interceptorManager.initInterceptor())
                     .withPolicy(new HostPolicy(playbackUri + "/"))
                     .withPolicy(new ResourceGroupTaggingPolicy())
