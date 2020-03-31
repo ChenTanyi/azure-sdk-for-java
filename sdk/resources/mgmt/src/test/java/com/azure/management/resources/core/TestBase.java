@@ -158,7 +158,7 @@ public abstract class TestBase {
 
     @BeforeEach
     public void beforeTest(TestInfo testInfo) throws IOException {
-        if (isPlaybackMode() && System.getProperty("outputSkips") == "true") {
+        if (isPlaybackMode() && System.getProperty("outputSkips").equalsIgnoreCase("true")) {
             System.setOut(new PrintStream(new OutputStream() {
                 @Override
                 public void write(int b) throws IOException {
