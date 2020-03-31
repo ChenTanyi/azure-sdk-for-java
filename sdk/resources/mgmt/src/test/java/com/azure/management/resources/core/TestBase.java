@@ -158,6 +158,21 @@ public abstract class TestBase {
 
     @BeforeEach
     public void beforeTest(TestInfo testInfo) throws IOException {
+        if (isPlaybackMode() && System.getProperty("outputSkips") == "true") {
+            System.setOut(new PrintStream(new OutputStream() {
+                @Override
+                public void write(int b) throws IOException {
+
+                }
+            }));
+
+            System.setErr(new PrintStream(new OutputStream() {
+                @Override
+                public void write(int b) throws IOException {
+
+                }
+            }));
+        }
         this.testInfo = testInfo;
         String testMothodName = testInfo.getTestMethod().get().getName();
         printThreadInfo(String.format("%s: %s", "beforeTest", testMothodName));
@@ -185,12 +200,6 @@ public abstract class TestBase {
             defaultSubscription = ZERO_SUBSCRIPTION;
             interceptorManager.addTextReplacementRule(PLAYBACK_URI_BASE + "1234", playbackUri);
             System.out.println(playbackUri);
-            out = System.out;
-            System.setOut(new PrintStream(new OutputStream() {
-                public void write(int b) {
-                    //DO NOTHING
-                }
-            }));
         } else {
             if (System.getenv("AZURE_AUTH_LOCATION") != null) { // Record mode
                 final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
