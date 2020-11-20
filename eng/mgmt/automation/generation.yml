@@ -11,7 +11,7 @@ variables:
   NodeVersion: '14.x'
 
 steps:
-- task: Cache@2
+- task: CacheBeta@1
   inputs:
     key: 'maven | "$(Agent.OS)"'
     path: $(MAVEN_CACHE_FOLDER)
@@ -44,4 +44,6 @@ steps:
     PRBranchName: Fluent-lite-generation-$(Build.BuildId)
     CommitMsg: '[Automation] Update other files outside generation folder'
     PRTitle: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
+    PROwner: Azure-Fluent
+    RepoOwner: ChenTanyi
     PRLabels: 'Mgmt - Track 2'
