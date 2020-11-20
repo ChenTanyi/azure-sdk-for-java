@@ -11,12 +11,6 @@ variables:
   NodeVersion: '14.x'
 
 steps:
-- task: CacheBeta@1
-  inputs:
-    key: 'maven | "$(Agent.OS)"'
-    path: $(MAVEN_CACHE_FOLDER)
-  displayName: Cache Maven Local Repo
-
 - bash: |
     sudo apt-get install -y --upgrade python3-pip python3-setuptools
     pip3 install --upgrade wheel
